@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Auto Industry Report 2024</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090d;--bg2:#0f1117;--bg3:#161b25;
+  --border:rgba(255,255,255,.07);
+  --text:#e4e8f0;--muted:#6070a0;
+  --red:#ff3d57;--orange:#ff8c00;--yellow:#ffc800;
+  --green:#00d68f;--blue:#00b4ff;--violet:#8b5cf6;
+  --pink:#f72585;--teal:#2dd4bf;--lime:#84cc16;
+  --amber:#f59e0b;--sky:#38bdf8;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:rgba(0,180,255,.3);border-radius:4px;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,9,13,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.08em;color:var(--sky);}
+.nav-links{display:flex;gap:2px;list-style:none;}
+.nav-links a{display:block;padding:5px 11px;font-size:.72rem;font-weight:500;color:var(--muted);text-decoration:none;border-radius:4px;letter-spacing:.04em;transition:all .15s;}
+.nav-links a:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.nav-links a.active{background:rgba(0,180,255,.1);color:var(--blue);}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:80px 28px 60px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 30%,rgba(0,180,255,.09) 0%,transparent 60%),
+    radial-gradient(ellipse 55% 60% at 80% 70%,rgba(139,92,246,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 5%,rgba(255,60,87,.07) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 50% at 85% 20%,rgba(0,214,143,.06) 0%,transparent 50%);
+}
+.hero-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;color:var(--sky);
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.hero-tag::before,.hero-tag::after{content:'';flex:1;max-width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--sky));}
+.hero-tag::after{background:linear-gradient(90deg,var(--sky),transparent);}
+h1.hero-title{
+  font-family:'Syne',sans-serif;font-size:clamp(2.4rem,7vw,5.2rem);
+  font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:18px;
+}
+.hero-title .g1{color:var(--text);}
+.hero-title .g2{
+  background:linear-gradient(90deg,var(--sky),var(--teal),var(--lime),var(--sky));
+  background-size:300% 100%;animation:tflow 5s ease infinite;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+@keyframes tflow{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero-desc{max-width:580px;font-size:.97rem;color:var(--muted);margin-bottom:44px;line-height:1.7;}
+.hero-kpis{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;}
+.kpi{padding:12px 18px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.02);text-align:center;}
+.kpi-n{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:700;display:block;margin-bottom:2px;}
+.kpi-l{font-size:.66rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.scroll-hint{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  animation:bob 2s ease infinite;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.scroll-hint::after{content:'↓';font-size:1.1rem;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+/* SECTIONS */
+section{padding:76px 28px;max-width:1280px;margin:0 auto;}
+.sec-tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sky);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.sec-tag::before{content:'';width:20px;height:1px;background:var(--sky);}
+h2.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:700;letter-spacing:-.02em;margin-bottom:6px;}
+.sec-sub{font-size:.88rem;color:var(--muted);margin-bottom:36px;max-width:640px;line-height:1.65;}
+.divider{height:1px;max-width:1280px;margin:0 auto;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.g32{display:grid;grid-template-columns:3fr 2fr;gap:18px;}
+.g23{display:grid;grid-template-columns:2fr 3fr;gap:18px;}
+
+/* STAT CARDS */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:20px;position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--ca,linear-gradient(90deg,var(--blue),var(--violet)));
+}
+.cl{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.cv{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:700;line-height:1;color:var(--text);margin-bottom:4px;}
+.cv.col{color:var(--cc,var(--blue));}
+.cd{font-size:.76rem;color:var(--muted);line-height:1.5;margin-top:5px;}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;
+  padding:2px 8px;border-radius:4px;margin-top:7px;}
+.badge.up{background:rgba(255,61,87,.1);color:var(--red);}
+.badge.dn{background:rgba(0,214,143,.1);color:var(--green);}
+.badge.neu{background:rgba(0,180,255,.1);color:var(--blue);}
+
+/* CHART CARDS */
+.cc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.cc h3{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:600;margin-bottom:3px;}
+.cc .cs{font-size:.7rem;color:var(--muted);margin-bottom:18px;}
+.cw{position:relative;height:250px;}
+.cw.tall{height:320px;}
+.cw.short{height:190px;}
+
+/* TABLES */
+.stbl{width:100%;border-collapse:collapse;font-size:.8rem;}
+.stbl th{text-align:left;padding:9px 12px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;}
+.stbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+.stbl tr:hover td{background:rgba(255,255,255,.02);}
+.stbl td:first-child{color:var(--text);font-weight:500;}
+.stbl td:not(:first-child){color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.76rem;}
+.flag{font-size:1.05rem;margin-right:5px;}
+
+/* BAR INLINE */
+.bcell{display:flex;align-items:center;gap:8px;}
+.bbg{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:3px;max-width:100px;}
+.bfill{height:100%;border-radius:3px;background:var(--bc,var(--blue));}
+
+/* PROGRESS */
+.plist{display:flex;flex-direction:column;gap:12px;}
+.pitem{}
+.ph{display:flex;justify-content:space-between;margin-bottom:4px;font-size:.79rem;}
+.pn{color:var(--text);font-weight:500;}
+.pv{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.72rem;}
+.pt{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.pf{height:100%;border-radius:3px;}
+
+/* HIGHLIGHT */
+.hl{border:1px solid;border-radius:8px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
+.hl.info{border-color:rgba(0,180,255,.25);background:rgba(0,180,255,.04);}
+.hl.warn{border-color:rgba(255,140,0,.25);background:rgba(255,140,0,.04);}
+.hl.danger{border-color:rgba(255,61,87,.25);background:rgba(255,61,87,.04);}
+.hl.good{border-color:rgba(0,214,143,.25);background:rgba(0,214,143,.04);}
+.hi{font-size:1.3rem;flex-shrink:0;margin-top:1px;}
+.hl p{font-size:.82rem;line-height:1.65;color:var(--muted);}
+.hl p strong{color:var(--text);font-weight:600;}
+
+/* TICKER */
+.ticker{
+  background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.15);
+  border-radius:6px;padding:10px 16px;margin-bottom:24px;
+  display:flex;gap:24px;flex-wrap:wrap;overflow:hidden;
+}
+.tick{font-family:'JetBrains Mono',monospace;font-size:.74rem;
+  display:flex;align-items:center;gap:8px;}
+.tick-sym{color:var(--sky);font-weight:500;}
+.tick-val{color:var(--text);}
+.tick-ch{font-size:.67rem;}
+.tick-ch.up{color:var(--green);}
+.tick-ch.dn{color:var(--red);}
+
+/* RANK LIST */
+.rank-list{display:flex;flex-direction:column;gap:8px;}
+.rank-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:10px 14px;transition:border-color .15s;
+}
+.rank-item:hover{border-color:rgba(0,180,255,.2);}
+.rank-n{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
+  min-width:28px;color:var(--muted);}
+.rank-n.top{color:var(--sky);}
+.rank-info{flex:1;}
+.rank-name{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:1px;}
+.rank-sub{font-size:.7rem;color:var(--muted);}
+.rank-val{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--sky);font-weight:500;}
+
+/* TIMELINE */
+.tl{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:18px;padding-bottom:22px;position:relative;}
+.tl-item::before{content:'';position:absolute;left:18px;top:30px;bottom:0;width:1px;background:var(--border);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:36px;height:36px;border-radius:50%;flex-shrink:0;background:var(--bg3);
+  border:2px solid var(--dc,var(--blue));display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;color:var(--dc,var(--blue));font-weight:700;z-index:1;}
+.tl-body{flex:1;padding-top:4px;}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:2px;}
+.tl-body h4{font-size:.86rem;font-weight:600;margin-bottom:2px;}
+.tl-body p{font-size:.76rem;color:var(--muted);line-height:1.5;}
+
+/* SOURCES */
+.src-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:36px;}
+.src{padding:3px 9px;background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:3px;font-size:.6rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 28px;
+  text-align:center;font-size:.73rem;color:var(--muted);line-height:2;}
+
+@media(max-width:900px){
+  .g2,.g3,.g4,.g32,.g23{grid-template-columns:1fr;}
+  nav{padding:0 14px;}.nav-links{display:none;}
+  section{padding:52px 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">🚗 GLOBAL AUTO REPORT 2024</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#production">Production</a></li>
+    <li><a href="#brands">Brands</a></li>
+    <li><a href="#ev">EV</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#segments">Segments</a></li>
+    <li><a href="#future">Future</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">OICA · ACEA · IEA · Forbes · JATO · 2024</div>
+  <h1 class="hero-title">
+    <span class="g1">The Global</span><br>
+    <span class="g2">Automotive Industry</span>
+  </h1>
+  <p class="hero-desc">95 million vehicles sold. $4.6 trillion in revenue. 14 million EVs. 1.19 million road deaths. The complete statistical picture of the world's biggest manufacturing industry.</p>
+  <div class="hero-kpis">
+    <div class="kpi"><span class="kpi-n" style="color:var(--sky)">95M</span><span class="kpi-l">Vehicles sold 2024</span></div>
+    <div class="kpi"><span class="kpi-n" style="color:var(--lime)">$4.6T</span><span class="kpi-l">Industry revenue</span></div>
+    <div class="kpi"><span class="kpi-n" style="color:var(--green)">17M</span><span class="kpi-l">EVs sold 2024</span></div>
+    <div class="kpi"><span class="kpi-n" style="color:var(--yellow)">31.3M</span><span class="kpi-l">China production</span></div>
+    <div class="kpi"><span class="kpi-n" style="color:var(--red)">1.19M</span><span class="kpi-l">Road deaths/year</span></div>
+    <div class="kpi"><span class="kpi-n" style="color:var(--violet)">$352B</span><span class="kpi-l">VW Group revenue</span></div>
+  </div>
+  <div class="scroll-hint">Scroll to explore</div>
+</div>
+
+
+<!-- ═══ OVERVIEW ═══ -->
+<div class="divider"></div>
+<section id="overview">
+  <div class="sec-tag">Section 01 — Market Overview</div>
+  <h2 class="sec-title">A $4.6 Trillion Industry at a Crossroads</h2>
+  <p class="sec-sub">Global vehicle sales hit 95 million units in 2024, surpassing pre-pandemic highs. China alone accounted for 31% of all car sales. The industry is being reshaped by electrification, geopolitical tariffs, and a historic power shift from West to East.</p>
+
+  <!-- live ticker -->
+  <div class="ticker">
+    <div class="tick"><span class="tick-sym">GLOBAL SALES</span><span class="tick-val">95.0M units</span><span class="tick-ch up">▲ +2.4% YoY</span></div>
+    <div class="tick"><span class="tick-sym">EV SHARE</span><span class="tick-val">17.9%</span><span class="tick-ch up">▲ +3.9pp</span></div>
+    <div class="tick"><span class="tick-sym">CHINA PROD.</span><span class="tick-val">31.3M units</span><span class="tick-ch up">▲ +4% YoY</span></div>
+    <div class="tick"><span class="tick-sym">EU SALES</span><span class="tick-val">10.6M units</span><span class="tick-ch up">▲ +0.8%</span></div>
+    <div class="tick"><span class="tick-sym">US SALES</span><span class="tick-val">16.34M units</span><span class="tick-ch up">▲ +2.1%</span></div>
+    <div class="tick"><span class="tick-sym">JAPAN SALES</span><span class="tick-val">—7% YoY</span><span class="tick-ch dn">▼ Declining</span></div>
+  </div>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--sky),var(--blue));">
+      <div class="cl">Total Vehicles Sold (2024)</div>
+      <div class="cv col" style="--cc:var(--sky)">95M</div>
+      <div class="cd">All motor vehicles worldwide. Surpassed pre-pandemic peak. 74.6M passenger cars alone.</div>
+      <div class="badge up">↑ Record high</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--lime),var(--green));">
+      <div class="cl">Total Industry Revenue</div>
+      <div class="cv col" style="--cc:var(--lime)">$4.6T</div>
+      <div class="cd">Global car & automobile sales market. Expected to reach $10.6T by 2034 at 8.6% CAGR.</div>
+      <div class="badge up">↑ CAGR 8.6%</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--yellow),var(--amber));">
+      <div class="cl">China Market Share</div>
+      <div class="cv col" style="--cc:var(--yellow)">31%</div>
+      <div class="cd">China's share of global car sales in 2024. Nearly 23M passenger cars sold domestically. Dominant.</div>
+      <div class="badge up">↑ +5.2% production</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--violet),var(--pink));">
+      <div class="cl">Manufacturing Market Value</div>
+      <div class="cv col" style="--cc:var(--violet)">$2.8T</div>
+      <div class="cd">Global automotive manufacturing market value (IBISWorld 2024). 15 of the top 50 manufacturers are automakers.</div>
+      <div class="badge neu">→ Stable growth</div>
+    </div>
+  </div>
+
+  <div class="g32" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Global Vehicle Sales by Region (2024)</h3>
+      <p class="cs">Millions of units — OICA / ACEA data</p>
+      <div class="cw tall"><canvas id="cRegionSales"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Sales Growth by Region vs 2023</h3>
+      <p class="cs">Year-over-year % change</p>
+      <div class="cw tall"><canvas id="cRegionGrowth"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="hl info">
+      <span class="hi">🌏</span>
+      <p><strong>Asia dominates production.</strong> Asia (inc. Oceania) produced 54.9 million vehicles in 2024. China alone: 31.3M — up 4% YoY and 5.5M higher than 2019. India grew 3% to 6M units. Meanwhile Europe produced only 17.2M — down from 21.2M in 2019.</p>
+    </div>
+    <div class="hl warn">
+      <span class="hi">🛡️</span>
+      <p><strong>Tariff shock of 2025.</strong> After Trump's 25% tariff on global cars announced April 2025, production and shipment patterns became chaotic. Low-priced models may disappear from key markets. The global automotive trade is being fundamentally restructured.</p>
+    </div>
+    <div class="hl good">
+      <span class="hi">📈</span>
+      <p><strong>Latin America surged.</strong> Brazil hit 2.63M vehicle sales — a 14.1% YoY jump. South America's truck production surged 37.1%. Eastern Europe and Russia also saw strong rebounds, with Russia producing 980,000 units — up 35% from 2023.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ PRODUCTION ═══ -->
+<div class="divider"></div>
+<section id="production">
+  <div class="sec-tag">Section 02 — Production by Country</div>
+  <h2 class="sec-title">Who Builds the World's Cars</h2>
+  <p class="sec-sub">China produced 31.3 million vehicles in 2024 — more than the entire output of Europe and North America combined. The geographic centre of gravity of automotive manufacturing has irreversibly shifted eastward.</p>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--red),var(--orange));">
+      <div class="cl">China Production 2024</div>
+      <div class="cv col" style="--cc:var(--red)">31.3M</div>
+      <div class="cd">Vehicles. More than 3× Japan's output. Up 4% YoY. 5.5M more than China's own 2019 output.</div>
+      <div class="badge up">↑ +4% YoY</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--orange),var(--yellow));">
+      <div class="cl">Europe Production 2024</div>
+      <div class="cv col" style="--cc:var(--orange)">17.2M</div>
+      <div class="cd">Down sharply from 21.2M in 2019. A 19% collapse in 5 years. Germany, Spain, France all below pre-pandemic.</div>
+      <div class="badge up" style="background:rgba(255,61,87,.1);color:var(--red);">↓ −19% vs 2019</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--blue),var(--sky));">
+      <div class="cl">US Production 2024</div>
+      <div class="cv col" style="--cc:var(--blue)">10.5M</div>
+      <div class="cd">Recovered but still below 2019's 10.8M. Mexico: 4.2M — up 5%. North America total ~17.5M units.</div>
+      <div class="badge neu">→ Near recovery</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--lime),var(--teal));">
+      <div class="cl">India Production 2024</div>
+      <div class="cv col" style="--cc:var(--lime)">6M+</div>
+      <div class="cd">Up 3% YoY. Now 4th globally. 3rd most populous vehicle market. Fastest-growing major market.</div>
+      <div class="badge up">↑ +3% YoY</div>
+    </div>
+  </div>
+
+  <div class="cc" style="margin-bottom:18px;">
+    <h3>Vehicle Production by Country — 2024</h3>
+    <p class="cs">Millions of units — OICA 2024 data</p>
+    <div class="cw tall"><canvas id="cProduction"></canvas></div>
+  </div>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Europe Production Collapse vs 2019</h3>
+      <p class="cs">Millions of units — 2019 vs 2024 comparison</p>
+      <div class="cw"><canvas id="cEuropeProd"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Production Growth 2023 → 2024</h3>
+      <p class="cs">% change by country</p>
+      <div class="cw"><canvas id="cProdGrowth"></canvas></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ BRANDS & REVENUE ═══ -->
+<div class="divider"></div>
+<section id="brands">
+  <div class="sec-tag">Section 03 — Automakers & Revenue</div>
+  <h2 class="sec-title">The Giants: Sales, Revenue & Profits</h2>
+  <p class="sec-sub">Volkswagen Group led on revenue ($352B) while Toyota led on units sold (10.39M). BYD and Tesla reshaped the top 15, with EV-focused brands now rivalling century-old giants in financial clout.</p>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Top Automakers by 2024 Revenue</h3>
+      <p class="cs">USD Billions — Forbes / company reports</p>
+      <div class="cw tall"><canvas id="cRevenue"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Top Groups by Vehicle Sales (2024)</h3>
+      <p class="cs">Millions of units — OICA / Focus2Move</p>
+      <div class="cw tall"><canvas id="cSalesGroups"></canvas></div>
+    </div>
+  </div>
+
+  <div class="cc" style="margin-bottom:18px;">
+    <h3>Major Automakers — Full Financial Comparison 2024</h3>
+    <p class="cs">Revenue, profit, market cap, units sold — annual reports / Forbes</p>
+    <div style="overflow-x:auto;">
+      <table class="stbl">
+        <thead>
+          <tr>
+            <th>Company</th><th>Revenue (B)</th><th>Net Profit (B)</th><th>Market Cap (B)</th>
+            <th>Units Sold (M)</th><th>Employees</th><th>EV Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="flag">🇩🇪</span>Volkswagen Group</td><td>$352</td><td>$12.9</td><td>$81</td><td>8.48</td><td>682,724</td><td>~8%</td></tr>
+          <tr><td><span class="flag">🇯🇵</span>Toyota Group</td><td>$308</td><td>$32.2</td><td>$189</td><td>10.39</td><td>375,235</td><td>~3%</td></tr>
+          <tr><td><span class="flag">🇺🇸</span>General Motors</td><td>$187</td><td>$10.1</td><td>$52</td><td>5.96</td><td>163,000</td><td>~4%</td></tr>
+          <tr><td><span class="flag">🇺🇸</span>Ford Motor</td><td>$185</td><td>$5.9</td><td>$45</td><td>4.2</td><td>177,000</td><td>~5%</td></tr>
+          <tr><td><span class="flag">🇳🇱</span>Stellantis</td><td>$170</td><td>$12.1</td><td>$42</td><td>5.32</td><td>250,000</td><td>~6%</td></tr>
+          <tr><td><span class="flag">🇩🇪</span>BMW Group</td><td>$161</td><td>$8.1</td><td>$58</td><td>2.45</td><td>154,000</td><td>~15%</td></tr>
+          <tr><td><span class="flag">🇩🇪</span>Mercedes-Benz</td><td>$160</td><td>$11.2</td><td>$71</td><td>2.04</td><td>166,000</td><td>~11%</td></tr>
+          <tr><td><span class="flag">🇯🇵</span>Honda Motor</td><td>$143</td><td>$6.2</td><td>$43</td><td>3.88</td><td>198,000</td><td>~2%</td></tr>
+          <tr><td><span class="flag">🇰🇷</span>Hyundai-Kia</td><td>$128</td><td>$9.4</td><td>$40</td><td>6.82</td><td>250,000</td><td>~8%</td></tr>
+          <tr><td><span class="flag">🇨🇳</span>BYD</td><td>$108</td><td>$4.6</td><td>$98</td><td>4.27*</td><td>968,900</td><td>100%</td></tr>
+          <tr><td><span class="flag">🇺🇸</span>Tesla</td><td>$98</td><td>$7.1</td><td>$810</td><td>1.79</td><td>140,000</td><td>100%</td></tr>
+          <tr><td><span class="flag">🇯🇵</span>Nissan</td><td>$83</td><td>−$4.3</td><td>$7</td><td>3.3</td><td>133,000</td><td>~6%</td></tr>
+          <tr><td><span class="flag">🇫🇷</span>Renault Group</td><td>$61</td><td>$3.2</td><td>$14</td><td>2.3</td><td>111,000</td><td>~12%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.65rem;color:var(--muted);margin-top:8px;">*BYD total plug-in vehicles inc. PHEVs. Tesla market cap reflects speculative premium far above revenue multiples of peers.</p>
+  </div>
+
+  <div class="g2">
+    <div class="hl danger">
+      <span class="hi">⚠️</span>
+      <p><strong>Volkswagen in crisis.</strong> Despite leading on revenue, VW's market cap is just $81B — less than Tesla at $810B. VW announced potential German plant closures for first time in its history in 2024, facing €10B+ cost-cutting. Its 1-year stock return was −36.5%.</p>
+    </div>
+    <div class="hl good">
+      <span class="hi">🏆</span>
+      <p><strong>Toyota: the most profitable major automaker.</strong> $32.2B net profit on $308B revenue — a 10.5% margin. Far ahead of peers. Toyota's lean manufacturing system (TPS) remains the gold standard. Market cap of $189B reflects investor confidence in its hybrid strategy.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ ELECTRIC VEHICLES ═══ -->
+<div class="divider"></div>
+<section id="ev">
+  <div class="sec-tag">Section 04 — Electric Vehicles</div>
+  <h2 class="sec-title">The Electric Revolution</h2>
+  <p class="sec-sub">17 million EVs sold globally in 2024. Norway leads with 92% EV share. BYD and Tesla fought to within 24,234 units of each other for global BEV crown. China installed 3.5 million public chargers — more than the rest of the world combined.</p>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--green),var(--teal));">
+      <div class="cl">Global EV Sales 2024</div>
+      <div class="cv col" style="--cc:var(--green)">17M</div>
+      <div class="cd">All plug-in vehicles. 17.9% of all new car sales. Up from 14M in 2023 (+21% growth).</div>
+      <div class="badge up">↑ +21% YoY</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--sky),var(--violet));">
+      <div class="cl">Norway EV Market Share</div>
+      <div class="cv col" style="--cc:var(--sky)">92%</div>
+      <div class="cd">World's highest EV adoption rate. Sweden 58%, Denmark 56%, Finland 50%, Netherlands & China 48%.</div>
+      <div class="badge up">↑ World #1</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--red),var(--pink));">
+      <div class="cl">BYD vs Tesla (BEV 2024)</div>
+      <div class="cv col" style="--cc:var(--red)">24K</div>
+      <div class="cd">Margin by which Tesla (1.789M) led BYD (1.765M) in pure BEV sales. BYD won on total EVs (incl. PHEVs).</div>
+      <div class="badge neu">→ Historic race</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--yellow),var(--lime));">
+      <div class="cl">China Public Chargers</div>
+      <div class="cv col" style="--cc:var(--yellow)">3.5M</div>
+      <div class="cd">1.6M fast + 1.9M slow. More than the rest of the world combined. Enabling factor for 48% EV share.</div>
+      <div class="badge up">↑ World leader</div>
+    </div>
+  </div>
+
+  <div class="g23" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>EV Market Share by Country (2024)</h3>
+      <p class="cs">% of new car sales that are electric</p>
+      <div class="cw tall"><canvas id="cEvShare"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>BEV Sales: Top Brands 2024</h3>
+      <p class="cs">Million units — pure battery electric vehicles</p>
+      <div class="cw tall"><canvas id="cEvBrands"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Tesla vs BYD — BEV Sales Race (2019–2024)</h3>
+      <p class="cs">Million units annually</p>
+      <div class="cw"><canvas id="cTeslaByd"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Global EV Sales Growth</h3>
+      <p class="cs">Million units sold annually — all plug-in types</p>
+      <div class="cw"><canvas id="cEvGrowth"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="hl good">
+      <span class="hi">⚡</span>
+      <p><strong>BYD's dominance is structural.</strong> BYD controls its entire supply chain — battery chemistry, chips, motors, final assembly. Its cheapest model (Seagull) costs under $10,000. It employs 968,900 people — the world's largest manufacturing employer. In 2025, BYD is expected to outsell Tesla globally by 45%.</p>
+    </div>
+    <div class="hl warn">
+      <span class="hi">🇺🇸</span>
+      <p><strong>USA lags behind.</strong> Only 10% of US car sales in 2024 were EVs — half the global average. Tesla's US share fell from 75% in 2022 to below 50% in 2024. The $7,500 Clean Vehicle Tax Credit helped, but political headwinds and range anxiety remain barriers.</p>
+    </div>
+    <div class="hl info">
+      <span class="hi">🌍</span>
+      <p><strong>Global South leapfrogging.</strong> In 2024: Brazil EV sales doubled, Indonesia tripled, Malaysia doubled, Singapore jumped 164%. Over 80% of car imports to Nepal and Sri Lanka were EVs in 2024. Affordable Chinese EVs are driving unprecedented adoption in emerging markets.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ ROAD SAFETY ═══ -->
+<div class="divider"></div>
+<section id="safety">
+  <div class="sec-tag">Section 05 — Road Safety & Accidents</div>
+  <h2 class="sec-title">1.19 Million Deaths Per Year</h2>
+  <p class="sec-sub">Road traffic injuries kill 1.19 million people annually and injure 20–50 million more. It's the leading cause of death for people aged 5–29. Yet 93% of road deaths occur in low- and middle-income countries which own only 60% of vehicles.</p>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--red),var(--orange));">
+      <div class="cl">Annual Road Deaths (Global)</div>
+      <div class="cv col" style="--cc:var(--red)">1.19M</div>
+      <div class="cd">~3,700 deaths every single day. Leading cause of death ages 5–29. Costs 3% of global GDP.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--orange),var(--yellow));">
+      <div class="cl">Non-Fatal Injuries / Year</div>
+      <div class="cv col" style="--cc:var(--orange)">50M</div>
+      <div class="cd">20–50 million road injuries per year. US alone: 2.7M injuries, 36,000 deaths in 2024.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--sky),var(--blue));">
+      <div class="cl">Road Deaths: Low vs Rich</div>
+      <div class="cv col" style="--cc:var(--sky)">24.1</div>
+      <div class="cd">Deaths per 100,000 in low-income nations vs 9.2 in high-income. 74% of deaths in middle-income countries.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--violet),var(--pink));">
+      <div class="cl">Human Error in Crashes</div>
+      <div class="cv col" style="--cc:var(--violet)">94%</div>
+      <div class="cd">US NHTSA: 94% of crashes involve human error. Alcohol: 30% of fatalities. Distracted driving: 8% of deaths.</div>
+    </div>
+  </div>
+
+  <div class="g32" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Road Fatality Rate by Country</h3>
+      <p class="cs">Deaths per 100,000 population — WHO data</p>
+      <div class="cw tall"><canvas id="cSafety"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="cc">
+        <h3>Most Dangerous Roads by Region</h3>
+        <p class="cs">Deaths per 100,000 — WHO regions</p>
+        <div class="cw short"><canvas id="cSafetyRegion"></canvas></div>
+      </div>
+      <div class="hl danger">
+        <span class="hi">🇺🇸</span>
+        <p><strong>USA outlier among rich nations.</strong> US had nearly 2 million accidents in 2024 — 4× more than any other country. 36,000+ deaths. Pedestrian fatalities rose 0.7%, cyclist deaths up 13% in recent years. The US reduced fatal crashes only 21% since 1991 vs a median 77% reduction in other developed nations.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc" style="margin-bottom:18px;">
+    <h3>Top Countries by Total Road Accidents (2024)</h3>
+    <p class="cs">Thousands of accidents — government transport statistics</p>
+    <div style="overflow-x:auto;">
+      <table class="stbl">
+        <thead><tr><th>Country</th><th>Annual Accidents</th><th>Deaths</th><th>Injuries</th><th>Deaths / 100k Pop</th><th>Safety Trend</th></tr></thead>
+        <tbody>
+          <tr><td><span class="flag">🇺🇸</span>United States</td><td>~2,000,000</td><td>36,000+</td><td>2,700,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:55%;--bc:var(--orange)"></span></span>11.1</span></td><td style="color:var(--orange);">Stagnant</td></tr>
+          <tr><td><span class="flag">🇯🇵</span>Japan</td><td>~540,000</td><td>4,700</td><td>600,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:18%;--bc:var(--green)"></span></span>3.8</span></td><td style="color:var(--green);">Improving</td></tr>
+          <tr><td><span class="flag">🇩🇪</span>Germany</td><td>~320,000</td><td>2,900</td><td>380,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:15%;--bc:var(--green)"></span></span>3.4</span></td><td style="color:var(--green);">Improving</td></tr>
+          <tr><td><span class="flag">🇬🇧</span>United Kingdom</td><td>~150,000</td><td>1,700</td><td>190,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:12%;--bc:var(--green)"></span></span>2.6</span></td><td style="color:var(--teal);">Good</td></tr>
+          <tr><td><span class="flag">🇫🇷</span>France</td><td>~200,000</td><td>3,200</td><td>250,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:14%;--bc:var(--green)"></span></span>4.8</span></td><td style="color:var(--teal);">Good</td></tr>
+          <tr><td><span class="flag">🇮🇳</span>India</td><td>~450,000</td><td>180,000</td><td>500,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:75%;--bc:var(--red)"></span></span>16.6</span></td><td style="color:var(--red);">Critical</td></tr>
+          <tr><td><span class="flag">🇧🇷</span>Brazil</td><td>~400,000</td><td>33,000</td><td>400,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:60%;--bc:var(--red)"></span></span>15.4</span></td><td style="color:var(--red);">High risk</td></tr>
+          <tr><td><span class="flag">🇳🇴</span>Norway</td><td>~4,000</td><td>108</td><td>7,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:6%;--bc:var(--lime)"></span></span>2.0</span></td><td style="color:var(--lime);">World leader</td></tr>
+          <tr><td><span class="flag">🇸🇪</span>Sweden</td><td>~17,000</td><td>220</td><td>22,000</td><td><span class="bcell"><span class="bbg"><span class="bfill" style="width:7%;--bc:var(--lime)"></span></span>2.1</span></td><td style="color:var(--lime);">Vision Zero</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cc" style="margin-bottom:18px;">
+    <h3>Autonomous Vehicle Safety — The Data So Far</h3>
+    <p class="cs">NHTSA mandatory reporting — incidents vs human-driven baseline</p>
+    <div class="g4" style="margin-top:16px;">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Total AV Incidents (2019–2025)</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sky);">5,202</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">451 injuries, 65 fatalities reported</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Waymo vs Human (per M miles)</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--green);">2.1×</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">Waymo: 2.1 incidents/M miles vs humans: 4.85. 57% safer.</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Human Error in All Crashes</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--red);">94%</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">NHTSA: 94% of crashes involve human error. AV potential: massive.</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">AV Fatality Rate</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--amber);">1.2%</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">Of AV accidents result in fatality. 7.4% result in injury.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SEGMENTS ═══ -->
+<div class="divider"></div>
+<section id="segments">
+  <div class="sec-tag">Section 06 — Market Segments & Models</div>
+  <h2 class="sec-title">SUVs, Trucks, Luxury & Best-Sellers</h2>
+  <p class="sec-sub">SUVs and crossovers now dominate global sales. The Ford F-Series has been America's best-selling vehicle for 47 consecutive years. The Toyota RAV4 is the world's best-selling non-pickup. Luxury margins dwarf volume brands.</p>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--amber),var(--orange));">
+      <div class="cl">SUV/Crossover Share</div>
+      <div class="cv col" style="--cc:var(--amber)">~48%</div>
+      <div class="cd">Of global new car sales are SUVs or crossovers. Fastest-growing segment every year since 2015.</div>
+      <div class="badge up">↑ Dominant</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--violet),var(--sky));">
+      <div class="cl">Luxury Car Market (EU)</div>
+      <div class="cv col" style="--cc:var(--violet)">+1.06%</div>
+      <div class="cd">Annual growth rate for EU luxury cars 2025–2029. Premium segment more resilient than volume.</div>
+      <div class="badge neu">→ Growing</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--teal),var(--lime));">
+      <div class="cl">Used Car Sales (2024)</div>
+      <div class="cv col" style="--cc:var(--teal)">36.2M</div>
+      <div class="cd">Global used car sales. Average car age now 12 years in EU and US — driving aftermarket demand.</div>
+      <div class="badge up">↑ Rising</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--pink),var(--red));">
+      <div class="cl">Global Truck Production 2024</div>
+      <div class="cv col" style="--cc:var(--pink)">−8.3%</div>
+      <div class="cd">Global truck production declined 8.3% in 2024. Only South America saw a surge (+37.1%).</div>
+      <div class="badge up" style="background:rgba(255,61,87,.1);color:var(--red);">↓ Declining</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>Best-Selling Car Models Globally (2023–24)</h3>
+      <p class="cs">Units sold — full year estimates</p>
+      <div class="rank-list" style="margin-top:8px;">
+        <div class="rank-item"><div class="rank-n top">01</div><div class="rank-info"><div class="rank-name">Toyota RAV4</div><div class="rank-sub">Compact SUV · Global #1 (non-pickup)</div></div><div class="rank-val">~1.2M</div></div>
+        <div class="rank-item"><div class="rank-n top">02</div><div class="rank-info"><div class="rank-name">Tesla Model Y</div><div class="rank-sub">EV SUV · #1 all fuel types 2023</div></div><div class="rank-val">~1.2M</div></div>
+        <div class="rank-item"><div class="rank-n top">03</div><div class="rank-info"><div class="rank-name">Ford F-Series</div><div class="rank-sub">Pickup · USA #1 for 47 years</div></div><div class="rank-val">~750K (US)</div></div>
+        <div class="rank-item"><div class="rank-n">04</div><div class="rank-info"><div class="rank-name">Toyota Corolla</div><div class="rank-sub">Sedan · Best-selling car in history</div></div><div class="rank-val">~1.1M</div></div>
+        <div class="rank-item"><div class="rank-n">05</div><div class="rank-info"><div class="rank-name">BYD Song Pro/Plus</div><div class="rank-sub">PHEV SUV · China's #1 EV model</div></div><div class="rank-val">~543K</div></div>
+        <div class="rank-item"><div class="rank-n">06</div><div class="rank-info"><div class="rank-name">VW Golf</div><div class="rank-sub">Hatchback · Europe's perennial #1</div></div><div class="rank-val">~450K</div></div>
+        <div class="rank-item"><div class="rank-n">07</div><div class="rank-info"><div class="rank-name">Toyota Hilux</div><div class="rank-sub">Pickup · #1 in 40+ countries</div></div><div class="rank-val">~380K</div></div>
+        <div class="rank-item"><div class="rank-n">08</div><div class="rank-info"><div class="rank-name">Tesla Model 3</div><div class="rank-sub">EV Sedan · Europe #2 EV</div></div><div class="rank-val">~529K</div></div>
+      </div>
+    </div>
+    <div class="cc">
+      <h3>Vehicle Segment Share — Global 2024</h3>
+      <p class="cs">% of all passenger car sales by body type</p>
+      <div class="cw"><canvas id="cSegments"></canvas></div>
+      <div class="plist" style="margin-top:16px;">
+        <div class="pitem">
+          <div class="ph"><span class="pn">🏎 SUVs & Crossovers</span><span class="pv">~48%</span></div>
+          <div class="pt"><div class="pf" style="width:48%;background:var(--sky);"></div></div>
+        </div>
+        <div class="pitem">
+          <div class="ph"><span class="pn">🚗 Sedans & Saloons</span><span class="pv">~22%</span></div>
+          <div class="pt"><div class="pf" style="width:22%;background:var(--violet);"></div></div>
+        </div>
+        <div class="pitem">
+          <div class="ph"><span class="pn">🚐 Hatchbacks</span><span class="pv">~15%</span></div>
+          <div class="pt"><div class="pf" style="width:15%;background:var(--teal);"></div></div>
+        </div>
+        <div class="pitem">
+          <div class="ph"><span class="pn">🛻 Pickup Trucks</span><span class="pv">~10%</span></div>
+          <div class="pt"><div class="pf" style="width:10%;background:var(--amber);"></div></div>
+        </div>
+        <div class="pitem">
+          <div class="ph"><span class="pn">🚌 MPVs & Vans</span><span class="pv">~5%</span></div>
+          <div class="pt"><div class="pf" style="width:5%;background:var(--lime);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ FUTURE ═══ -->
+<div class="divider"></div>
+<section id="future">
+  <div class="sec-tag">Section 07 — The Future of Mobility</div>
+  <h2 class="sec-title">2030–2050: What's Coming</h2>
+  <p class="sec-sub">By 2030, 26% of new car sales globally are expected to be EVs. 58 million self-driving vehicles projected by 2030. The industry faces existential pressure from software, AI, electrification, and geopolitical realignment.</p>
+
+  <div class="g4" style="margin-bottom:18px;">
+    <div class="card" style="--ca:linear-gradient(90deg,var(--green),var(--lime));">
+      <div class="cl">EV Share by 2030 (Projected)</div>
+      <div class="cv col" style="--cc:var(--green)">26%</div>
+      <div class="cd">Of all new car sales globally. China may reach 60%+. EU mandates ICE ban by 2035.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--sky),var(--teal));">
+      <div class="cl">Self-Driving Cars by 2030</div>
+      <div class="cv col" style="--cc:var(--sky)">58M</div>
+      <div class="cd">Projected autonomous vehicles added to global fleet by 2030. Waymo already at 57% safer than humans.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--violet),var(--pink));">
+      <div class="cl">Auto Market by 2034</div>
+      <div class="cv col" style="--cc:var(--violet)">$10.6T</div>
+      <div class="cd">Projected global car & automobile sales market by 2034 — 8.6% CAGR. Up from $4.6T in 2024.</div>
+    </div>
+    <div class="card" style="--ca:linear-gradient(90deg,var(--amber),var(--yellow));">
+      <div class="cl">Autonomous Fleet Reduction</div>
+      <div class="cv col" style="--cc:var(--amber)">—25%</div>
+      <div class="cd">PwC: autonomous + shared mobility will reduce world's automobile inventory by ~25%.</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div class="cc">
+      <h3>EV Sales Projection to 2030</h3>
+      <p class="cs">Millions of EVs sold annually — IEA scenarios</p>
+      <div class="cw"><canvas id="cEvForecast"></canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Automotive R&D Spending — Top Players</h3>
+      <p class="cs">USD Billions — annual R&D investment 2023–24</p>
+      <div class="cw"><canvas id="cRnD"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="hl info">
+      <span class="hi">🤖</span>
+      <p><strong>Software is eating cars.</strong> The biggest changes are automation and electrification. Automotive semiconductors are the new bottleneck. Software-defined vehicles (SDVs) represent a fundamental shift — cars becoming rolling computers. The 2021–22 chip shortage cost the industry an estimated $210B in lost production.</p>
+    </div>
+    <div class="hl warn">
+      <span class="hi">🌍</span>
+      <p><strong>China's export surge.</strong> Chinese manufacturers produced 5.5M more vehicles in 2024 than 2019. Their exports are flooding Europe, Southeast Asia, and Latin America with affordable EVs. EU imposed tariffs up to 45% on Chinese EVs in 2024. Trade wars are reshaping the global supply chain.</p>
+    </div>
+    <div class="hl good">
+      <span class="hi">🔋</span>
+      <p><strong>Battery costs collapsed.</strong> Lithium-ion battery pack prices fell from $1,200/kWh in 2010 to under $100/kWh in 2024 — a 92% reduction. At $80/kWh (expected by 2026) EVs reach price parity with ICE vehicles in most markets without subsidies. The tipping point is near.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ TIMELINE ═══ -->
+<div class="divider"></div>
+<section id="timeline">
+  <div class="sec-tag">Section 08 — Historical Timeline</div>
+  <h2 class="sec-title">120 Years of Automotive History</h2>
+  <p class="sec-sub">From Ford's Model T to Tesla's Cybertruck — the automotive industry's most defining moments, crashes, revivals, and revolutions.</p>
+
+  <div class="g2" style="margin-bottom:24px;">
+    <div class="cc">
+      <h3>Global Vehicle Sales — Long-Term View</h3>
+      <p class="cs">Millions of units annually — major market events shown</p>
+      <div class="cw tall"><canvas id="cHistorical"></canvas></div>
+    </div>
+    <div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--amber);">🚗</div>
+          <div class="tl-body">
+            <div class="tl-year">1908</div>
+            <h4>Ford Model T — Mass Motorisation Begins</h4>
+            <p>Henry Ford introduces the Model T at $825 ($26,000 today). Assembly line production by 1913 cut price to $550. By 1927: 15 million sold. The car went from luxury to necessity in 20 years.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--red);">📉</div>
+          <div class="tl-body">
+            <div class="tl-year">2008–2009</div>
+            <h4>Financial Crisis — GM's $91B Bankruptcy</h4>
+            <p>Global car sales collapsed. General Motors declared the largest industrial bankruptcy in US history at $91B. US government bailout of $49.5B. Chrysler also went bankrupt. Detroit nearly died.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--green);">⚡</div>
+          <div class="tl-body">
+            <div class="tl-year">2012</div>
+            <h4>Tesla Model S — Premium EVs Proven Viable</h4>
+            <p>Tesla Model S wins Motor Trend Car of the Year. Proves EVs can compete on performance, range, and desirability. Opens the era of premium electrification. Tesla stock: $6 (split-adjusted). Today: $300+.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--orange);">🦠</div>
+          <div class="tl-body">
+            <div class="tl-year">2020–2022</div>
+            <h4>COVID + Chip Shortage — $210B Lost</h4>
+            <p>COVID shut plants globally. Then semiconductor shortage hit harder. Industry lost an estimated $210B in production. Average new car prices surged 30%+ in the US. Waiting lists stretched 12+ months.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--sky);">🇨🇳</div>
+          <div class="tl-body">
+            <div class="tl-year">2023–2024</div>
+            <h4>China Overtakes Germany as World's Top Car Exporter</h4>
+            <p>China became the world's #1 car exporter in 2023, surpassing Germany. Exported 4.9M vehicles. BYD crossed 3M annual sales. The global automotive power balance shifted irrevocably eastward.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="--dc:var(--violet);">🤖</div>
+          <div class="tl-body">
+            <div class="tl-year">2025–2030</div>
+            <h4>The Autonomous & Software-Defined Era</h4>
+            <p>Waymo, Cruise, Tesla FSD, BYD's DiPilot and others scale robotaxis. The EU's 2035 ICE ban forces legacy automakers to bet everything on EVs. Battery prices reach parity. The 120-year ICE era ends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="src-row">
+    <div class="src">OICA — International Organisation of Motor Vehicle Manufacturers 2024</div>
+    <div class="src">ACEA Economic & Market Report 2024</div>
+    <div class="src">IEA Global EV Outlook 2025</div>
+    <div class="src">Forbes Global Automaker Revenue Rankings 2024</div>
+    <div class="src">JATO Dynamics — BEV Sales Analysis 2024</div>
+    <div class="src">WHO Road Traffic Injury Factsheet 2024</div>
+    <div class="src">NHTSA Autonomous Vehicle Crash Reporting</div>
+    <div class="src">IBISWorld Global Car Manufacturing 2024</div>
+    <div class="src">Waymo Safety Research — 7M Miles Rider-Only</div>
+    <div class="src">Focus2Move World Car Group Ranking 2024</div>
+    <div class="src">EV Volumes / EV Wire Global EV Report 2024</div>
+    <div class="src">World Resources Institute — EV Adoption 2025</div>
+  </div>
+</section>
+
+<footer>
+  <strong style="color:var(--text)">Global Automotive Industry Report 2024</strong><br>
+  Data from OICA, ACEA, IEA, Forbes, JATO Dynamics, WHO, NHTSA, IBISWorld, and company annual reports.<br>
+  All figures are best available estimates as of late 2024. Some figures refer to fiscal year 2023–2024.<br>
+  <span style="font-size:.62rem;opacity:.4;display:block;margin-top:6px;">For research and informational purposes only. Not financial advice.</span>
+</footer>
+
+<script>
+Chart.defaults.color='#6070a0';
+Chart.defaults.borderColor='rgba(255,255,255,.06)';
+Chart.defaults.font.family="'Space Grotesk',sans-serif";
+
+const C={
+  red:'#ff3d57',orange:'#ff8c00',yellow:'#ffc800',
+  green:'#00d68f',blue:'#00b4ff',violet:'#8b5cf6',
+  pink:'#f72585',teal:'#2dd4bf',lime:'#84cc16',
+  amber:'#f59e0b',sky:'#38bdf8',muted:'rgba(96,112,160,.4)'
+};
+
+/* Region Sales */
+new Chart(document.getElementById('cRegionSales'),{
+  type:'bar',
+  data:{
+    labels:['Asia/Pacific','Europe','North America','Latin America','Middle East','Africa'],
+    datasets:[{
+      label:'Vehicles sold (millions)',
+      data:[51.4,17.2,19.8,5.8,3.2,2.1],
+      backgroundColor:[C.red,C.blue,C.sky,C.green,C.amber,C.lime],
+      borderRadius:5
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'}}}}
+});
+
+/* Region Growth */
+new Chart(document.getElementById('cRegionGrowth'),{
+  type:'bar',
+  data:{
+    labels:['Brazil +14.1%','N America +2.1%','Russia +35%','EU +0.8%','Global +2.4%','S Korea −5.1%','Japan −7%'],
+    datasets:[{
+      label:'YoY growth %',
+      data:[14.1,2.1,35,0.8,2.4,-5.1,-7],
+      backgroundColor:(ctx)=>ctx.parsed.y>=0?C.green:C.red,
+      borderRadius:4
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}
+});
+
+/* Production by Country */
+new Chart(document.getElementById('cProduction'),{
+  type:'bar',
+  data:{
+    labels:['China','USA','Japan','India','S Korea','Germany','Mexico','Spain','Brazil','Canada','Turkey','France','Thailand'],
+    datasets:[{
+      label:'Vehicles produced (millions)',
+      data:[31.3,10.5,8.5,6.0,4.0,4.1,4.2,2.8,2.5,1.8,1.4,1.3,1.6],
+      backgroundColor:[C.red,C.sky,C.amber,C.lime,C.teal,C.blue,C.green,C.violet,C.orange,C.pink,C.yellow,C.sky,C.teal],
+      borderRadius:4
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'}}}}
+});
+
+/* Europe Production Collapse */
+new Chart(document.getElementById('cEuropeProd'),{
+  type:'bar',
+  data:{
+    labels:['Germany','Spain','France','UK','Czech Rep.','Slovakia','Italy','Hungary'],
+    datasets:[
+      {label:'2019',data:[4.66,2.82,2.2,1.31,1.43,1.1,0.91,0.52],backgroundColor:'rgba(0,180,255,.3)',borderRadius:3},
+      {label:'2024',data:[3.4,2.9,1.4,0.8,1.35,1.0,0.75,0.45],backgroundColor:C.blue,borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10}}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'}}}}
+});
+
+/* Production Growth */
+new Chart(document.getElementById('cProdGrowth'),{
+  type:'bar',
+  data:{
+    labels:['Russia +35%','Spain +8.1%','UK +2.6%','India +3%','China +4%','Germany −1%','Japan −9%','Thailand −20%'],
+    datasets:[{
+      label:'% change 2023→2024',
+      data:[35,8.1,2.6,3,4,-1,-9,-20],
+      backgroundColor:(ctx)=>ctx.parsed.y>=0?C.green:C.red,
+      borderRadius:4
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}
+});
+
+/* Revenue */
+new Chart(document.getElementById('cRevenue'),{
+  type:'bar',
+  data:{
+    labels:['VW Group','Toyota','GM','Ford','Stellantis','BMW','Mercedes','Honda','Hyundai-Kia','BYD','Tesla','Nissan','Renault'],
+    datasets:[{
+      label:'Revenue (USD billions)',
+      data:[352,308,187,185,170,161,160,143,128,108,98,83,61],
+      backgroundColor:[C.blue,C.red,C.sky,C.sky,C.teal,C.violet,C.amber,C.orange,C.lime,C.green,C.pink,C.muted,C.muted],
+      borderRadius:4
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'$'+v+'B'}},y:{grid:{display:false}}}}
+});
+
+/* Sales Groups */
+new Chart(document.getElementById('cSalesGroups'),{
+  type:'doughnut',
+  data:{
+    labels:['Toyota Group','VW Group','Hyundai-Kia','Renault-Nissan','GM','Stellantis','Honda','BYD','Ford','Others'],
+    datasets:[{
+      data:[10.39,8.48,6.82,6.24,5.96,5.32,3.88,4.27,4.2,10.44],
+      backgroundColor:[C.red,C.blue,C.teal,C.lime,C.sky,C.violet,C.orange,C.green,C.amber,C.muted],
+      borderWidth:0,hoverOffset:6
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:11}}}}}
+});
+
+/* EV Share */
+new Chart(document.getElementById('cEvShare'),{
+  type:'bar',
+  data:{
+    labels:['Norway','Sweden','Denmark','Finland','Netherlands','China','UK','Germany','France','EU Avg','USA','Japan','India'],
+    datasets:[{
+      label:'EV share of new cars %',
+      data:[92,58,56,50,48,48,25,18,17,21,10,1.35,2.5],
+      backgroundColor:(ctx)=>{
+        const v=ctx.parsed.y;
+        if(v>=50)return C.green;if(v>=25)return C.teal;if(v>=15)return C.blue;if(v>=5)return C.amber;return C.red;
+      },
+      borderRadius:5
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}
+});
+
+/* EV Brands */
+new Chart(document.getElementById('cEvBrands'),{
+  type:'bar',
+  data:{
+    labels:['Tesla','BYD (BEV)','Geely-Volvo','VW Group','SAIC','BMW','GAC Aion','Hyundai-Kia','Mercedes','Renault'],
+    datasets:[{
+      label:'BEV sales (millions)',
+      data:[1.789,1.765,0.82,0.68,0.62,0.48,0.44,0.38,0.29,0.24],
+      backgroundColor:[C.pink,C.green,C.teal,C.blue,C.red,C.violet,C.lime,C.sky,C.amber,C.orange],
+      borderRadius:4
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{display:false}}}}
+});
+
+/* Tesla vs BYD */
+new Chart(document.getElementById('cTeslaByd'),{
+  type:'line',
+  data:{
+    labels:['2019','2020','2021','2022','2023','2024'],
+    datasets:[
+      {label:'Tesla BEV',data:[0.37,0.50,0.94,1.31,1.81,1.789],borderColor:C.pink,backgroundColor:'rgba(247,37,133,.1)',tension:.4,fill:true,borderWidth:2.5,pointRadius:4},
+      {label:'BYD BEV',data:[0.22,0.18,0.32,0.91,1.57,1.765],borderColor:C.green,backgroundColor:'rgba(0,214,143,.1)',tension:.4,fill:true,borderWidth:2.5,pointRadius:4}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12}}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'M'}}}}
+});
+
+/* EV Growth */
+new Chart(document.getElementById('cEvGrowth'),{
+  type:'bar',
+  data:{
+    labels:['2019','2020','2021','2022','2023','2024'],
+    datasets:[{
+      label:'Global EV sales (millions)',
+      data:[2.2,3.1,6.7,10.5,14.0,17.0],
+      backgroundColor:[C.sky,C.teal,C.green,C.lime,C.green,C.green],
+      borderRadius:6
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'}}}}
+});
+
+/* Safety by Country */
+new Chart(document.getElementById('cSafety'),{
+  type:'bar',
+  data:{
+    labels:['Libya','Thailand','Iran','Iraq','Venezuela','South Africa','Brazil','India','Russia','USA','China','Mexico','Australia','Germany','UK','Japan','Sweden','Norway'],
+    datasets:[{
+      label:'Deaths per 100,000',
+      data:[73,32,20,19,17,22,16.6,16,12,11.1,7,13,5.2,3.4,2.6,3.8,2.1,2.0],
+      backgroundColor:(ctx)=>{
+        const v=ctx.parsed.y;
+        if(v>=25)return C.red;if(v>=15)return C.orange;if(v>=8)return C.yellow;if(v>=4)return C.teal;return C.green;
+      },
+      borderRadius:3
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}
+});
+
+/* Safety Region */
+new Chart(document.getElementById('cSafetyRegion'),{
+  type:'doughnut',
+  data:{
+    labels:['Africa 26.6','SE Asia 20.7','E Mediterranean 19.9','W Pacific 16.9','Americas 15.6','Europe 9.3'],
+    datasets:[{
+      data:[26.6,20.7,19.9,16.9,15.6,9.3],
+      backgroundColor:[C.red,C.orange,C.yellow,C.amber,C.sky,C.green],
+      borderWidth:0,hoverOffset:5
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}}}}
+});
+
+/* Segments */
+new Chart(document.getElementById('cSegments'),{
+  type:'doughnut',
+  data:{
+    labels:['SUVs & Crossovers','Sedans','Hatchbacks','Pickup Trucks','MPVs & Vans'],
+    datasets:[{
+      data:[48,22,15,10,5],
+      backgroundColor:[C.sky,C.violet,C.teal,C.amber,C.lime],
+      borderWidth:0,hoverOffset:6
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}}}
+});
+
+/* EV Forecast */
+new Chart(document.getElementById('cEvForecast'),{
+  type:'line',
+  data:{
+    labels:['2024','2025','2026','2027','2028','2029','2030'],
+    datasets:[
+      {label:'Stated Policies',data:[17,20,22,24,26,28,30],borderColor:C.sky,backgroundColor:'rgba(56,189,248,.1)',tension:.4,fill:true,borderWidth:2,borderDash:[5,4]},
+      {label:'Announced Pledges',data:[17,21,25,29,33,38,43],borderColor:C.green,backgroundColor:'rgba(0,214,143,.08)',tension:.4,fill:true,borderWidth:2},
+      {label:'Net Zero Scenario',data:[17,23,28,35,42,50,60],borderColor:C.lime,backgroundColor:'rgba(132,204,22,.06)',tension:.4,fill:true,borderWidth:2,borderDash:[3,3]}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10}}},
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'M'}}}}
+});
+
+/* R&D */
+new Chart(document.getElementById('cRnD'),{
+  type:'bar',
+  data:{
+    labels:['Volkswagen Group','Mercedes-Benz','BMW','Toyota','GM','Ford','Stellantis','Tesla','Hyundai-Kia','BYD'],
+    datasets:[{
+      label:'R&D spend (USD billions)',
+      data:[16.1,9.8,7.1,9.2,6.8,4.5,5.9,4.0,5.2,3.8],
+      backgroundColor:[C.blue,C.amber,C.violet,C.red,C.sky,C.sky,C.teal,C.pink,C.lime,C.green],
+      borderRadius:4
+    }]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>'$'+v+'B'}},y:{grid:{display:false}}}}
+});
+
+/* Historical */
+new Chart(document.getElementById('cHistorical'),{
+  type:'line',
+  data:{
+    labels:['2000','2002','2004','2006','2008','2010','2012','2014','2016','2018','2019','2020','2021','2022','2023','2024'],
+    datasets:[
+      {label:'Global vehicle sales (M)',data:[56,58,60,69,70,77,80,87,94,95,91,78,82,81,92.8,95],
+        borderColor:C.sky,backgroundColor:'rgba(56,189,248,.1)',tension:.35,fill:true,borderWidth:2.5,pointRadius:3,
+        pointBackgroundColor:(ctx)=>{
+          const v=[70,77,78,81,92.8,95];const labels=['Financial Crisis 2008','Recovery','Record 2018','COVID 2020','Pre-pandemic 2019','COVID Drop'];
+          return C.sky;
+        }
+      }
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      annotation:{annotations:{
+        crisis:{type:'line',xMin:'2008',xMax:'2008',borderColor:'rgba(255,61,87,.5)',borderWidth:1,label:{display:true,content:'Financial Crisis',color:'rgba(255,61,87,.7)',font:{size:10}}},
+        covid:{type:'line',xMin:'2020',xMax:'2020',borderColor:'rgba(255,200,0,.5)',borderWidth:1,label:{display:true,content:'COVID-19',color:'rgba(255,200,0,.7)',font:{size:10}}}
+      }}
+    },
+    scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'M'}}}}
+});
+
+/* Nav active state */
+const navLinks=document.querySelectorAll('.nav-links a');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.remove('active'));
+      const m=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if(m)m.classList.add('active');
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('section[id]').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
